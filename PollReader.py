@@ -104,7 +104,11 @@ class PollReader():
         harris_total_scores= []
         trump_total_scores= []
 
-        
+
+        harris_avgerage = sum(harris_total_scores) / len(harris_total_scores)
+        trump_average= sum(trump_total_scores) / len(trump_total_scores)
+
+
         pass
 
 
