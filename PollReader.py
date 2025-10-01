@@ -55,16 +55,16 @@ class PollReader():
         """
 
         # iterate through each row of the data
-        for i in self.raw_data:
-
+        for i in self.raw_data[1:]:
+    
             # split up the row by column
-            seperated = i.split(' ')
+            seperated = i.split(',')
 
             # map each part of the row to the correct column
             self.data_dict['month'].append(seperated[0])
             self.data_dict['date'].append(int(seperated[1]))
-            self.data_dict['sample'].append(int(seperated[2]))
-            self.data_dict['sample type'].append(seperated[2])
+            self.data_dict['sample'].append(int(seperated[2].split(" ")[0]))
+            self.data_dict['sample type'].append(seperated[2].split(" ")[1])
             self.data_dict['Harris result'].append(float(seperated[3]))
             self.data_dict['Trump result'].append(float(seperated[4]))
 
@@ -105,6 +105,19 @@ class PollReader():
             tuple: A tuple containing the net change for Harris and Trump, in that order.
                    Positive values indicate an increase, negative values indicate a decrease.
         """
+        harris= self.data_dict["Harris result"]
+        trump= self.data_dict["Trump result"]
+
+        h_early= harris[0:30]
+        h_late= harris[-30:]
+        t_early= trump[0:30]
+        t_late= trump[-30:]
+
+        harris_total= sum(h_late)/30 - sum(h_early)/30 
+        trump_total= sum(t_late)/30 - sum(t_early)/30 
+
+        return (harris_total, trump_total)
+    
         pass
 
 
@@ -165,5 +178,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
     unittest.main(verbosity=2)
